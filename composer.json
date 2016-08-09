@@ -1,0 +1,12 @@
+{
+  "name": "the-spot-net/hubboard",
+  "description": "A Github Dashboard",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "neotsn",
+      "email": "hubboard@the-spot.net"
+    }
+  ]
+}
