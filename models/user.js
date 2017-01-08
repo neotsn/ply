@@ -1,9 +1,4 @@
-// Credentials
-var credentials = require('../../credentials');
-
 var mongoose = require('mongoose');
-mongoose.connect(credentials.mongo.CONNECTION_STRING);
-var db = mongoose.connection;
 
 // User Model
 var UserSchema = mongoose.Schema({
@@ -31,25 +26,20 @@ var UserSchema = mongoose.Schema({
     _json: {
         type: 'string'
     },
+
     // Ply Details
     email: {
+        type: 'string'
+    },
+    organizations: {
+        type: 'string'
+    },
+    teams: {
         type: 'string'
     }
 });
 
 var User = module.exports = mongoose.model('User', UserSchema);
-
-module.exports.createUser = function(newUser, callback) {
-
-    // bcrypt.genSalt(10, function(err, salt) {
-    //     if (err) throw err;
-    //     bcrypt.hash(newUser.password, salt, function(err, hash) {
-    //         if (err) throw err;
-    //         newUser.password = hash;
-    //         newUser.save(callback);
-    //     });
-    // });
-};
 
 module.exports.getUserById = function(id, callback) {
     User.findById(id, callback);
@@ -63,41 +53,54 @@ module.exports.getUserByGithubId = function(githubId, callback) {
     User.findOne(query, callback);
 };
 
-module.exports.getUserByUsername = function(username, callback) {
-    var query = {
-        username: username
-    };
-    User.findOne(query, callback); // Just getting one record
-};
-
 module.exports.findOrCreate = function(profile, accessToken, done) {
 
-    User.findOne({
-        githubId: profile.id
-    }, function(err, user) {
-        if (err) return done(err);
+    User
+        .findOne({
+            githubId: profile.id
+        }, function(err, user) {
 
-        // No user was found...
-        if (!user) {
-            user = new User({
-                // Github Details, plucked
-                githubId: profile.id,
-                accessToken: accessToken,
-                displayName: profile.displayName,
-                username: profile.username,
-                avatarUrl: profile._json.avatar_url,
-                github: profile._json,
-                // Ply Fields
-                email: ''
-            });
-            user.save(function(err) {
-                if (err) console.log(err);
+            if (err) return done(err);
+
+            console.log(user);
+
+            // No user was found...
+            if (!user) {
+                user = new User({
+                    // Github Details, plucked
+                    githubId: profile.id,
+                    accessToken: accessToken,
+                    displayName: profile.displayName,
+                    username: profile.username,
+                    avatarUrl: profile._json.avatar_url,
+                    github: profile._json,
+                    // Ply Fields
+                    email: ''
+                });
+                console.log('saving');
+                user.save(function(err) {
+                    if (err) console.log(err);
+                    return done(err, user);
+                });
+            }
+            else {
+
+                // var query = {
+                //         githubId: profile.id
+                //     },
+                //     update = {
+                //         '$set': {
+                //             accessToken: accessToken
+                //         }
+                //     };
+
+                // User
+                //     .findAndModify(query, update,
+                //         function(err, user) {
+                console.log('found');
+                console.log(user);
                 return done(err, user);
-            });
-        }
-        else {
-            //found user. Return
-            return done(err, user);
-        }
-    });
+                // });
+            }
+        });
 }

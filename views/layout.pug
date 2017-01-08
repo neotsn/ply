@@ -32,13 +32,15 @@ html
               img(src="/images/chrome/logos/GitHub-Mark-32px.png")
               | Sign in
           else
-            a.navbar-login.navbar-right.btn.btn-danger(href="/users/logout")
+            a.navbar-login.navbar-right.btn.btn-danger(href="/logout")
               img(src=""+user.avatarUrl)
               | Logout #{user.displayName}
             
     block content
     hr
     footer.text-center
-      p © 2016 Company, Inc.
+      p 
+        | © 2017 
+        a(href="https://thepizzy.net") thepizzy.net
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js', integrity='sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa', crossorigin='anonymous')

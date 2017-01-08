@@ -4,6 +4,7 @@ var router = express.Router();
 // Constant Files
 var locales = require('../common/locales');
 var credentials = require('../../credentials');
+// var common = require('../common/functions');
 
 // Models
 var User = require('../models/user');
@@ -47,22 +48,20 @@ passport.use(new GitHubStrategy({
     }
 ));
 
+/**
+ * End Authentication Code
+ */
 // Simple route middleware to ensure user is authenticated.
 //   Use this route middleware on any resource that needs to be protected.  If
 //   the request is authenticated (typically via a persistent login session),
 //   the request will proceed.  Otherwise, the user will be redirected to the
 //   login page.
-function ensureAuthenticated(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/login')
-}
-
-/**
- * End Authentication Code
- */
-
+// function ensureAuthenticated(req, res, next) {
+//     if (req.isAuthenticated()) {
+//         return next();
+//     }
+//     res.redirect('/login')
+// }
 /**
  * Routes
  */
@@ -86,9 +85,10 @@ router.get('/', function(req, res, next) {
 //   back to this application at /auth/github/callback
 router.get('/auth/github',
     passport.authenticate('github', {
-        scope: ['user:email']
+        scope: ['read:org', 'user:email']
     }),
     function(req, res) {
+        console.log('should not be here');
         // The request will be redirected to GitHub for authentication, so this
         // function will not be called.
     });
@@ -96,15 +96,20 @@ router.get('/auth/github',
 // GET /auth/github/callback
 //   Use passport.authenticate() as route middleware to authenticate the
 //   request.  If authentication fails, the user will be redirected back to the
-//   login page.  Otherwise, the primary route function will be called,
-//   which, in this example, will redirect the user to the home page.
+//   login page.  Otherwise, the primary route function will be called
 router.get('/auth/github/callback',
     passport.authenticate('github', {
-        failureRedirect: '/login'
+        failureRedirect: '/'
     }),
     function(req, res) {
+        console.log('loggedin');
         req.flash('success', 'Successfully logged in');
         res.redirect('/');
     });
+
+router.get('/logout', function(req, res) {
+    req.logout();
+    res.redirect('/');
+});
 
 module.exports = router;
