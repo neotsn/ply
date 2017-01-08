@@ -35,6 +35,9 @@ html
             a.navbar-login.navbar-right.btn.btn-danger(href="/logout")
               img(src=""+user.avatarUrl)
               | Logout #{user.displayName}
+            ul.nav.navbar-nav.navbar-right
+              li
+                a(href="/admin/") Dashboard
             
     block content
     hr
