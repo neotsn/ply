@@ -1,0 +1,44 @@
+doctype html
+html
+  head
+    title= TITLE
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css', integrity='sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u', crossorigin='anonymous')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css', integrity='sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp', crossorigin='anonymous')
+
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    nav.navbar.navbar-inverse.navbar-fixed-top
+      .container
+        .navbar-header
+          button.navbar-toggle.collapsed(type='button', data-toggle='collapse', data-target='#navbar', aria-expanded='false', aria-controls='navbar')
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          
+          a.navbar-brand(href='#')
+            img.navbar-logo(src="/images/chrome/logos/logo-v1-white-100x100.png")
+            
+        #navbar.navbar-collapse.collapse
+          ul.nav.navbar-nav
+            li.active
+              a(href='/') Home
+            li
+              a(href='/features') Features
+            li
+              a(href='/pricing') Pricing
+          if !user
+            a.navbar-right.navbar-login.btn.btn-success(href="/auth/github")
+              img(src="/images/chrome/logos/GitHub-Mark-32px.png")
+              | Sign in
+          else
+            a.navbar-login.navbar-right.btn.btn-danger(href="/users/logout")
+              img(src=""+user.avatarUrl)
+              | Logout #{user.displayName}
+            
+    block content
+    hr
+    footer.text-center
+      p © 2016 Company, Inc.
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js', integrity='sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa', crossorigin='anonymous')
