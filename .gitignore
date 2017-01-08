@@ -1,11 +1,9 @@
-/.c9/
-/node_modules/
+# Directories
+.idea/
+.c9/
+node_modules/
+public/stylesheets/
+publi/images/uploads/
+
+# Files
 connectMongo.sh
-
-
-# Commit your application's lock file http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file
-# You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file
-# composer.lock
-
-/.idea/
-public/stylesheets/style.css
