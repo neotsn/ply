@@ -66,11 +66,8 @@ passport.use(new GitHubStrategy({
  * Routes
  */
 
-/* GET home page. */
+// GET home page.
 router.get('/', function(req, res, next) {
-
-    console.log(req.user);
-
     res.render('index', {
         TITLE: locales.site.NAME,
         HEADLINE: locales.index.HEADLINE,
@@ -88,7 +85,6 @@ router.get('/auth/github',
         scope: ['read:org', 'user:email']
     }),
     function(req, res) {
-        console.log('should not be here');
         // The request will be redirected to GitHub for authentication, so this
         // function will not be called.
     });
@@ -102,9 +98,8 @@ router.get('/auth/github/callback',
         failureRedirect: '/'
     }),
     function(req, res) {
-        console.log('loggedin');
         req.flash('success', 'Successfully logged in');
-        res.redirect('/');
+        res.redirect('/admin');
     });
 
 router.get('/logout', function(req, res) {

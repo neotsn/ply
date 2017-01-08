@@ -5,6 +5,11 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
+var multer = require('multer');
+var upload = multer({
+  dest: 'public/images/uploads'
+});
+var expressValidator = require('express-validator');
 
 var flash = require('connect-flash');
 var session = require('express-session');
@@ -44,7 +49,22 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(expressValidator({
+  errorFormatter: function(param, msg, value) {
+    var namespace = param.split('.'),
+      root = namespace.shift(),
+      formParam = root;
 
+    while (namespace.length) {
+      formParam += '[' + namespace.shift() + ']';
+    }
+    return {
+      param: formParam,
+      msg: msg,
+      value: value
+    };
+  }
+}));
 app.use(flash());
 
 app.use(function(req, res, next) {

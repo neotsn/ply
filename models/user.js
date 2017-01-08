@@ -5,38 +5,20 @@ var UserSchema = mongoose.Schema({
 
     // Github Details
     githubId: {
-        type: 'string',
+        type: String,
         index: true
     },
-    accessToken: {
-        type: 'string'
-    },
-    displayName: {
-        type: 'string'
-    },
-    username: {
-        type: 'string'
-    },
-    avatarUrl: {
-        type: 'string'
-    },
-    _raw: {
-        type: 'string'
-    },
-    _json: {
-        type: 'string'
-    },
+    accessToken: String,
+    displayName: String,
+    username: String,
+    avatarUrl: String,
+    _json: String,
 
     // Ply Details
-    email: {
-        type: 'string'
-    },
-    organizations: {
-        type: 'string'
-    },
-    teams: {
-        type: 'string'
-    }
+    email: String,
+    organizations: [String],
+    teams: [String]
+
 });
 
 var User = module.exports = mongoose.model('User', UserSchema);
@@ -53,6 +35,17 @@ module.exports.getUserByGithubId = function(githubId, callback) {
     User.findOne(query, callback);
 };
 
+module.exports.addOrg = function(orgId, userId) {
+
+    var update = {
+        "$push": {
+            "organizations": orgId
+        }
+    };
+
+    User.findByIdAndUpdate(userId, update);
+}
+
 module.exports.findOrCreate = function(profile, accessToken, done) {
 
     User
@@ -62,11 +55,10 @@ module.exports.findOrCreate = function(profile, accessToken, done) {
 
             if (err) return done(err);
 
-            console.log(user);
-
             // No user was found...
             if (!user) {
                 user = new User({
+
                     // Github Details, plucked
                     githubId: profile.id,
                     accessToken: accessToken,
@@ -74,33 +66,31 @@ module.exports.findOrCreate = function(profile, accessToken, done) {
                     username: profile.username,
                     avatarUrl: profile._json.avatar_url,
                     github: profile._json,
+
                     // Ply Fields
-                    email: ''
+                    email: '',
+                    organizations: [],
+                    teams: []
                 });
-                console.log('saving');
+
                 user.save(function(err) {
-                    if (err) console.log(err);
+                    if (err) throw err;
                     return done(err, user);
                 });
             }
             else {
 
-                // var query = {
-                //         githubId: profile.id
-                //     },
-                //     update = {
-                //         '$set': {
-                //             accessToken: accessToken
-                //         }
-                //     };
+                var update = {
+                    "$set": {
+                        "accessToken": accessToken
+                    }
+                };
 
-                // User
-                //     .findAndModify(query, update,
-                //         function(err, user) {
-                console.log('found');
-                console.log(user);
-                return done(err, user);
-                // });
+                User.findByIdAndUpdate(user._id, update,
+                    function(err, user) {
+                        return done(err, user);
+                    }
+                );
             }
         });
 }

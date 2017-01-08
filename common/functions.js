@@ -9,3 +9,14 @@ module.exports.ensureAuthenticated = function(req, res, next) {
     }
     res.redirect('/')
 }
+
+const mimeTypes = {
+    'image/png': 'png',
+    'image/jpg': 'jpg',
+    'image/jpeg': 'jpeg',
+    'image/gif': 'gif'
+};
+
+module.exports.isValidImageFile = function (fileParam) {
+    return (typeof mimeTypes[fileParam.mimetype] != 'undefined') ? true : false;
+}

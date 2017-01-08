@@ -4,32 +4,20 @@ var mongoose = require('mongoose');
 var OrganizationSchema = mongoose.Schema({
 
     // Admin Data
-    creatorUserId: {
-        type: 'string'
-    },
+    creatorUserId: String,
     subdomain: {
-        type: 'string',
+        type: String,
         index: true
     },
-    name: {
-        type: 'string'
-    },
-    description: {
-        type: 'string'
-    },
+    name: String,
+    description: String,
 
     // Associations
-    users: {
-        type: 'string'
-    },
-    teams: {
-        type: 'string'
-    },
+    users: [String],
+    teams: [String],
 
     // Meta Data
-    org_logo: {
-        type: 'string'
-    }
+    org_logo: String
 });
 
 var Organization = module.exports = mongoose.model('Organization', OrganizationSchema);
@@ -46,6 +34,28 @@ module.exports.getOrgBySubdomain = function(subdomain, callback) {
     };
     Organization.findOne(query, callback);
 };
+
+module.exports.createOrg = function(newOrg, callback) {
+
+    var query = {
+        "subdomain": newOrg.subdomain
+    };
+
+    Organization
+        .findOne(
+            query,
+            function(err, existingOrg) {
+                if (err) throw err;
+
+                if (existingOrg) {
+                    callback(err, false);
+                }
+                else {
+                    newOrg.save(callback);
+                }
+            });
+};
+
 
 // module.exports.getUserByGithubId = function(githubId, callback) {
 
