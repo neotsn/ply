@@ -8,3 +8,4 @@ connectMongo.sh
 # composer.lock
 
 /.idea/
+public/stylesheets/style.css
