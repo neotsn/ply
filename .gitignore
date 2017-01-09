@@ -3,7 +3,8 @@
 .c9/
 node_modules/
 public/stylesheets/
-publi/images/uploads/
+public/images/uploads/
 
 # Files
 connectMongo.sh
+npm-debug.log

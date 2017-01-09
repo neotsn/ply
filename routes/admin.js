@@ -6,8 +6,8 @@ var upload = multer({
 });
 
 // Constant Files
-var locales = require('../common/locales');
-var credentials = require('../../credentials');
+// var locales = require('../common/locales');
+// var credentials = require('../../credentials');
 var common = require('../common/functions');
 
 // Models

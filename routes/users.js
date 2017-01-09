@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var locales = require('../common/locales');
+// var locales = require('../common/locales');
 
 // Models
 // var User = require('../models/user');

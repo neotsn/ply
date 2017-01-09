@@ -28,7 +28,7 @@ module.exports = function(grunt) {
                 },
                 files: {
                     "public/stylesheets/style.css": [
-                        "src/less/*.less"
+                        "src/less/global.less"
                     ]
                 }
             },
@@ -43,7 +43,7 @@ module.exports = function(grunt) {
                 },
                 files: {
                     "public/stylesheets/style.css": [
-                        "src/less/*.less"
+                        "src/less/global.less"
                     ]
                 }
             }
