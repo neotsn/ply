@@ -1,0 +1,27 @@
+extends ../layout
+
+block content
+  .dashboard
+    h1.dashboard-heading.text-center Create Organization
+    .container
+      if validationErrors
+        each validationError, i in validationErrors
+          .alert.alert-danger #{validationError.msg}
+    .container
+      .row
+        .col-sm-6.col-sm-offset-3
+          form(method='post', action='/admin/organization/save', enctype='multipart/form-data')
+            .form-group
+              label Subdomain
+              input.form-control(type='text', placeholder='Enter your desired subdomain', name='org_subdomain')
+            .form-group
+              label Organization Name
+              input.form-control(type='text', placeholder='Enter your organization name', name='org_name')
+            .form-group
+              label Description
+              textarea.form-control(placeholder='Describe this organization', name='org_description')
+            .form-group
+              label Upload a Logo (Allowed File Types:jpg, jpeg, png, gif)
+              input.form-control(type='file', name='org_logo')
+            input.btn.btn-primary(type="submit", value="Create Organization")
+  
